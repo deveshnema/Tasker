@@ -76,16 +76,33 @@ class TaskerViewController: UITableViewController {
     }
     
     //MARK:- load tasks
-    func loadTasks() {
-        let request : NSFetchRequest<Task> = Task.fetchRequest()
+    func loadTasks(with request: NSFetchRequest<Task> = Task.fetchRequest()) {
         do {
             taskArray = try context.fetch(request)
         } catch  {
             print("Error-201: Couldnt fetch context: \(error)")
         }
-        
+        tableView.reloadData()
+    }
+}
+
+//MARK:- Searchbar  methods
+extension TaskerViewController : UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        let request : NSFetchRequest<Task> = Task.fetchRequest()
+        request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
+        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+        loadTasks(with: request)
     }
     
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text?.count == 0 {
+            loadTasks()
+            DispatchQueue.main.async {
+                searchBar.resignFirstResponder()
+            }
+        }
+    }
 }
 
 
