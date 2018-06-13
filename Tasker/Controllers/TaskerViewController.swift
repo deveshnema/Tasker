@@ -7,27 +7,19 @@
 //
 
 import UIKit
+import CoreData
 
 class TaskerViewController: UITableViewController {
 
     var taskArray = [Task]()
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        fetchData()
+        loadTasks()
     }
 
-    func fetchData() {
-        let travelTask = Task(title: "travel", done: false)
-        let groceriesTask = Task(title: "buy groceries", done: true)
-        let gymTask = Task(title: "go to gym", done: true)
-        
-        taskArray.append(travelTask)
-        taskArray.append(groceriesTask)
-        taskArray.append(gymTask)
 
-    }
-    
     //MARK:- Tableview datasource methods
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return taskArray.count
@@ -44,9 +36,8 @@ class TaskerViewController: UITableViewController {
     //MARK:- Tableview delegate methods
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         taskArray[indexPath.row].done = !taskArray[indexPath.row].done
+        saveTasksAndReloadTableData()
         tableView.deselectRow(at: indexPath, animated: true)
-        tableView.reloadData()
-
     }
 
     //MARK:- Add new tasks
@@ -57,9 +48,12 @@ class TaskerViewController: UITableViewController {
         
         let action = UIAlertAction(title: "Add Task", style: UIAlertActionStyle.default) { (action) in
             //what will happen once the user clicks the add task button on our alert
-            let task = Task(title: textField.text!, done: false)
+            let task = Task(context: self.context)
+            task.title = textField.text!
+            task.done = false
+            
             self.taskArray.append(task)
-            self.tableView.reloadData()
+            self.saveTasksAndReloadTableData()
         }
         
         alert.addTextField { (alertTextField) in
@@ -71,7 +65,26 @@ class TaskerViewController: UITableViewController {
         present(alert, animated: true, completion: nil)
     }
     
+    //MARK:- save tasks
+    func saveTasksAndReloadTableData() {
+        do {
+            try context.save()
+        } catch  {
+            print("Error-101: Couldnt save context: \(error)")
+        }
+        tableView.reloadData()
+    }
     
+    //MARK:- load tasks
+    func loadTasks() {
+        let request : NSFetchRequest<Task> = Task.fetchRequest()
+        do {
+            taskArray = try context.fetch(request)
+        } catch  {
+            print("Error-201: Couldnt fetch context: \(error)")
+        }
+        
+    }
     
 }
 
