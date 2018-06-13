@@ -13,6 +13,7 @@
 		956E176120D0C76B008232D3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 956E176020D0C76B008232D3 /* Assets.xcassets */; };
 		956E176420D0C76B008232D3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 956E176220D0C76B008232D3 /* LaunchScreen.storyboard */; };
 		956E176F20D0DAD0008232D3 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 956E176E20D0DAD0008232D3 /* Task.swift */; };
+		956E177320D0E4F1008232D3 /* TaskModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 956E177120D0E4F1008232D3 /* TaskModel.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		956E176320D0C76B008232D3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		956E176520D0C76B008232D3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		956E176E20D0DAD0008232D3 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
+		956E177220D0E4F1008232D3 /* TaskModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TaskModel.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +97,7 @@
 			isa = PBXGroup;
 			children = (
 				956E176E20D0DAD0008232D3 /* Task.swift */,
+				956E177120D0E4F1008232D3 /* TaskModel.xcdatamodeld */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -172,6 +175,7 @@
 			files = (
 				956E175C20D0C768008232D3 /* TaskerViewController.swift in Sources */,
 				956E176F20D0DAD0008232D3 /* Task.swift in Sources */,
+				956E177320D0E4F1008232D3 /* TaskModel.xcdatamodeld in Sources */,
 				956E175A20D0C768008232D3 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -368,6 +372,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		956E177120D0E4F1008232D3 /* TaskModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				956E177220D0E4F1008232D3 /* TaskModel.xcdatamodel */,
+			);
+			currentVersion = 956E177220D0E4F1008232D3 /* TaskModel.xcdatamodel */;
+			path = TaskModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 956E174E20D0C768008232D3 /* Project object */;
 }
