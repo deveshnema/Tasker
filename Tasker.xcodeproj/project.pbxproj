@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9548C88F20D21BFB005C73AB /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9548C88E20D21BFB005C73AB /* CategoryViewController.swift */; };
 		956E175A20D0C768008232D3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 956E175920D0C768008232D3 /* AppDelegate.swift */; };
 		956E175C20D0C768008232D3 /* TaskerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 956E175B20D0C768008232D3 /* TaskerViewController.swift */; };
 		956E175F20D0C768008232D3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 956E175D20D0C768008232D3 /* Main.storyboard */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9548C88E20D21BFB005C73AB /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
 		956E175620D0C768008232D3 /* Tasker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tasker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		956E175920D0C768008232D3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		956E175B20D0C768008232D3 /* TaskerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskerViewController.swift; sourceTree = "<group>"; };
@@ -69,6 +71,7 @@
 		956E176B20D0DA54008232D3 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				9548C88E20D21BFB005C73AB /* CategoryViewController.swift */,
 				956E175B20D0C768008232D3 /* TaskerViewController.swift */,
 			);
 			path = Controllers;
@@ -170,6 +173,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9548C88F20D21BFB005C73AB /* CategoryViewController.swift in Sources */,
 				956E175C20D0C768008232D3 /* TaskerViewController.swift in Sources */,
 				956E177320D0E4F1008232D3 /* TaskModel.xcdatamodeld in Sources */,
 				956E175A20D0C768008232D3 /* AppDelegate.swift in Sources */,

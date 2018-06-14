@@ -12,11 +12,17 @@ import CoreData
 class TaskerViewController: UITableViewController {
 
     var taskArray = [Task]()
+    
+    var selectedCategory : Category? {
+        didSet {
+            loadTasks()
+        }
+    }
+    
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadTasks()
     }
 
 
@@ -51,6 +57,7 @@ class TaskerViewController: UITableViewController {
             let task = Task(context: self.context)
             task.title = textField.text!
             task.done = false
+            task.parentCategory = self.selectedCategory
             
             self.taskArray.append(task)
             self.saveTasksAndReloadTableData()
@@ -76,7 +83,15 @@ class TaskerViewController: UITableViewController {
     }
     
     //MARK:- load tasks
-    func loadTasks(with request: NSFetchRequest<Task> = Task.fetchRequest()) {
+    func loadTasks(with request: NSFetchRequest<Task> = Task.fetchRequest(), predicate: NSPredicate? = nil) {
+        let categoryPredicate = NSPredicate(format: "parentCategory.name MATCHES %@", selectedCategory!.name!)
+
+        if let additionalPredicate = predicate {
+            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate, additionalPredicate])
+        } else {
+            request.predicate = categoryPredicate
+        }
+
         do {
             taskArray = try context.fetch(request)
         } catch  {
@@ -90,9 +105,9 @@ class TaskerViewController: UITableViewController {
 extension TaskerViewController : UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         let request : NSFetchRequest<Task> = Task.fetchRequest()
-        request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
+        let predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
         request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
-        loadTasks(with: request)
+        loadTasks(with: request, predicate: predicate)
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
