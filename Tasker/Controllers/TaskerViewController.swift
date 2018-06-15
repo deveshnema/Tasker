@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import SwipeCellKit
 
 class TaskerViewController: UITableViewController {
 
@@ -23,6 +24,8 @@ class TaskerViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.rowHeight = 80
+        tableView.register(SwipeTableViewCell.self, forCellReuseIdentifier: "TaskCell")
     }
 
 
@@ -32,7 +35,8 @@ class TaskerViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "TaskCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "TaskCell", for: indexPath) as! SwipeTableViewCell
+        cell.delegate = self
         let task = taskArray[indexPath.row]
         cell.textLabel?.text = task.title
         cell.accessoryType = task.done ? .checkmark : .none
@@ -120,6 +124,30 @@ extension TaskerViewController : UISearchBarDelegate {
     }
 }
 
+//MARK:- SwipeTableViewCellDelegate delegate
+extension TaskerViewController : SwipeTableViewCellDelegate {
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+        guard orientation == .right else { return nil }
+        
+        let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
+            // handle action by updating model with deletion
+            self.taskArray.remove(at: indexPath.row)
+        }
+        
+        // customize the action appearance
+        deleteAction.image = UIImage(named: "delete")
+        
+        return [deleteAction]
+    }
+    
+    func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
+        var options = SwipeOptions()
+        options.expansionStyle = .destructive
+        options.transitionStyle = .border
+        return options
+    }
+
+}
 
 
 
