@@ -9,9 +9,12 @@
 import UIKit
 import CoreData
 import SwipeCellKit
+import ChameleonFramework
 
 class TaskerViewController: UITableViewController {
 
+    @IBOutlet weak var searchBar: UISearchBar!
+    
     var taskArray = [Task]()
     
     var selectedCategory : Category? {
@@ -26,9 +29,26 @@ class TaskerViewController: UITableViewController {
         super.viewDidLoad()
         tableView.rowHeight = 80
         tableView.register(SwipeTableViewCell.self, forCellReuseIdentifier: "TaskCell")
+        tableView.separatorStyle = .none
     }
 
-
+    override func viewWillAppear(_ animated: Bool) {
+        title = selectedCategory!.name
+        guard let colorhex = selectedCategory?.color else {return}
+        guard let navbarcolor = UIColor(hexString: colorhex) else {return}
+        searchBar.barTintColor = navbarcolor
+        navigationController?.navigationBar.barTintColor = navbarcolor
+        navigationController?.navigationBar.tintColor = ContrastColorOf(navbarcolor, returnFlat: true)
+        navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedStringKey.foregroundColor : ContrastColorOf(navbarcolor, returnFlat: true)]
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        guard let originalColor = UIColor(hexString: "1D9BF6") else {return}
+        navigationController?.navigationBar.barTintColor = originalColor
+        navigationController?.navigationBar.tintColor = FlatWhite()
+        navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedStringKey.foregroundColor : FlatWhite()]
+    }
+    
     //MARK:- Tableview datasource methods
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return taskArray.count
@@ -40,6 +60,11 @@ class TaskerViewController: UITableViewController {
         let task = taskArray[indexPath.row]
         cell.textLabel?.text = task.title
         cell.accessoryType = task.done ? .checkmark : .none
+        if let color = UIColor(hexString: selectedCategory!.color!)?.darken(byPercentage: CGFloat(indexPath.row) / CGFloat(taskArray.count)) {
+            cell.backgroundColor = color
+            cell.textLabel?.textColor = ContrastColorOf(color, returnFlat: true)
+        }
+        
         return cell
     }
     

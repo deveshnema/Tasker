@@ -53,6 +53,7 @@ class CategoryViewController: UITableViewController {
         cell.textLabel?.text = categories[indexPath.row].name
         if let color = categories[indexPath.row].color {
             cell.backgroundColor = UIColor(hexString: color)
+            cell.textLabel?.textColor = ContrastColorOf(UIColor(hexString: color)!, returnFlat: true)
         }
         return cell
     }
