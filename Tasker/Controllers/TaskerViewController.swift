@@ -31,7 +31,23 @@ class TaskerViewController: UITableViewController {
         tableView.register(SwipeTableViewCell.self, forCellReuseIdentifier: "TaskCell")
         tableView.separatorStyle = .none
     }
-
+    
+    func animateTable() {
+        
+        self.tableView.reloadData()
+        
+        let cells = tableView.visibleCells
+        let tableHeight: CGFloat = tableView.bounds.size.height
+        
+        for (index, cell) in cells.enumerated() {
+            cell.transform = CGAffineTransform(translationX: 0, y: tableHeight)
+            UIView.animate(withDuration: 1.0, delay: 0.05 * Double(index), usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: [], animations: {
+                cell.transform = CGAffineTransform(translationX: 0, y: 0);
+            }, completion: nil)
+        }
+    }
+    
+    
     override func viewWillAppear(_ animated: Bool) {
         title = selectedCategory!.name
         guard let colorhex = selectedCategory?.color else {return}
@@ -40,6 +56,7 @@ class TaskerViewController: UITableViewController {
         navigationController?.navigationBar.barTintColor = navbarcolor
         navigationController?.navigationBar.tintColor = ContrastColorOf(navbarcolor, returnFlat: true)
         navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedStringKey.foregroundColor : ContrastColorOf(navbarcolor, returnFlat: true)]
+        animateTable()  
     }
     
     override func viewWillDisappear(_ animated: Bool) {
