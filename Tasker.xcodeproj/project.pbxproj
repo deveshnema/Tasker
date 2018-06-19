@@ -10,6 +10,7 @@
 		924FEAF65E524A53F2355ADA /* Pods_Tasker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C69D7115FA876873497F840C /* Pods_Tasker.framework */; };
 		9528FF2020D4C8B2006799A6 /* CategoryCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9528FF1F20D4C8B2006799A6 /* CategoryCollectionViewController.swift */; };
 		9528FF2320D4D147006799A6 /* PinterestLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9528FF2220D4D147006799A6 /* PinterestLayout.swift */; };
+		9528FF2520D4F8A8006799A6 /* RefreshContents.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9528FF2420D4F8A8006799A6 /* RefreshContents.xib */; };
 		956E175A20D0C768008232D3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 956E175920D0C768008232D3 /* AppDelegate.swift */; };
 		956E175C20D0C768008232D3 /* TaskerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 956E175B20D0C768008232D3 /* TaskerViewController.swift */; };
 		956E175F20D0C768008232D3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 956E175D20D0C768008232D3 /* Main.storyboard */; };
@@ -22,6 +23,7 @@
 		3F4868C192FB5A28EDC6C6A6 /* Pods-Tasker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tasker.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tasker/Pods-Tasker.release.xcconfig"; sourceTree = "<group>"; };
 		9528FF1F20D4C8B2006799A6 /* CategoryCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCollectionViewController.swift; sourceTree = "<group>"; };
 		9528FF2220D4D147006799A6 /* PinterestLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinterestLayout.swift; sourceTree = "<group>"; };
+		9528FF2420D4F8A8006799A6 /* RefreshContents.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RefreshContents.xib; sourceTree = "<group>"; };
 		956E175620D0C768008232D3 /* Tasker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tasker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		956E175920D0C768008232D3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		956E175B20D0C768008232D3 /* TaskerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskerViewController.swift; sourceTree = "<group>"; };
@@ -116,6 +118,7 @@
 			isa = PBXGroup;
 			children = (
 				956E175D20D0C768008232D3 /* Main.storyboard */,
+				9528FF2420D4F8A8006799A6 /* RefreshContents.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -198,6 +201,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				956E176420D0C76B008232D3 /* LaunchScreen.storyboard in Resources */,
+				9528FF2520D4F8A8006799A6 /* RefreshContents.xib in Resources */,
 				956E176120D0C76B008232D3 /* Assets.xcassets in Resources */,
 				956E175F20D0C768008232D3 /* Main.storyboard in Resources */,
 			);

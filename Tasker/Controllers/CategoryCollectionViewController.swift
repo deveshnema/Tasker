@@ -16,12 +16,26 @@ class CategoryCollectionViewController: UICollectionViewController, UICollection
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
+    var refreshController: UIRefreshControl!
+    var customView: UIView!
+    var timer: Timer!
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView?.register(CategoryCell.self, forCellWithReuseIdentifier: "CategoryCell")
         if let layout = collectionView?.collectionViewLayout as? PinterestLayout {
             layout.delegate = self
         }
+        
+        refreshController = UIRefreshControl()
+        refreshController.backgroundColor = UIColor.clear
+        refreshController.tintColor = UIColor.clear
+        loadCustomRefreshContents()
+
+        collectionView?.addSubview(refreshController)
+        
+        
         loadCategories()
     }
     
@@ -111,7 +125,7 @@ extension CategoryCollectionViewController: PinterestLayoutDelegate {
 }
 
 
-
+//MARK:- CategoryCell
 class CategoryCell : UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -134,6 +148,32 @@ class CategoryCell : UICollectionViewCell {
 }
 
 
+
+
+
+//MARK:- extension for custom refresh
+extension CategoryCollectionViewController {
+    func loadCustomRefreshContents() {
+        let refreshContents = Bundle.main.loadNibNamed("RefreshContents", owner: self, options: nil)
+        customView = refreshContents![0] as! UIView
+        customView.frame = refreshController.bounds
+        refreshController.addSubview(customView)
+    }
+    
+    func setupTimer() {
+        timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(endRefresh), userInfo: nil, repeats: true)
+    }
+    
+    @objc func endRefresh() {
+        refreshController.endRefreshing()
+        timer.invalidate()
+        timer = nil
+    }
+    
+    override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        setupTimer()
+    }
+}
 
 
 
