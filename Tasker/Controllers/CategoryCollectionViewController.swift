@@ -7,14 +7,13 @@
 //
 
 import UIKit
-import CoreData
 import ChameleonFramework
+import FirebaseFirestore
 
 class CategoryCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
     var categories = [Category]()
-    
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    let db = Firestore.firestore()
     
     var refreshController: UIRefreshControl!
     var customView: UIView!
@@ -37,6 +36,7 @@ class CategoryCollectionViewController: UICollectionViewController, UICollection
         
         
         loadCategories()
+        checkLiveUpdates()
     }
     
     @IBAction func addNewCategory(_ sender: UIBarButtonItem) {
@@ -45,11 +45,9 @@ class CategoryCollectionViewController: UICollectionViewController, UICollection
         let alert = UIAlertController(title: "Add new category", message: "", preferredStyle: UIAlertControllerStyle.alert)
         
         let action = UIAlertAction(title: "Add", style: UIAlertActionStyle.default) { (action) in
-            let newCategory = Category(context: self.context)
-            newCategory.name = textfield.text
-            newCategory.color = UIColor.randomFlat.hexValue()
+            let newCategory = Category(name: textfield.text!, tasks: [Task](), color: UIColor.randomFlat.hexValue())
             self.categories.append(newCategory)
-            self.saveCategories()
+            self.save(category: newCategory)
         }
         
         alert.addAction(action)
@@ -71,10 +69,9 @@ class CategoryCollectionViewController: UICollectionViewController, UICollection
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CategoryCell", for: indexPath) as! CategoryCell
         cell.titleLabel.text = categories[indexPath.item].name
-        if let color = categories[indexPath.item].color {
-            cell.backgroundColor = UIColor(hexString: color)
-            cell.titleLabel.textColor = ContrastColorOf(UIColor(hexString: color)!, returnFlat: true)
-        }
+        let color = categories[indexPath.item].color
+        cell.backgroundColor = UIColor(hexString: color)
+        cell.titleLabel.textColor = ContrastColorOf(UIColor(hexString: color)!, returnFlat: true)
         return cell
     }
     
@@ -96,24 +93,46 @@ class CategoryCollectionViewController: UICollectionViewController, UICollection
     }
     
     //MARK:- data manipulation methods
-    func saveCategories() {
-        do {
-            try context.save()
-        } catch  {
-            print("ERROR-301: couldnt save context \(error)")
+    func save(category: Category) {
+        db.collection("categories").document("\(category.name)").setData(category.dictionary) { err in
+            if let err = err {
+                print("Error writing document: \(err)")
+            } else {
+                print("Document successfully written!")
+            }
         }
-        collectionView?.reloadData()
+        DispatchQueue.main.async {
+            self.collectionView?.reloadData()
+        }
     }
     
     func loadCategories() {
-        let request : NSFetchRequest<Category> = Category.fetchRequest()
-        do {
-            categories = try context.fetch(request)
-        } catch  {
-            print("ERROR-401: couldnt load categories \(error)")
+        db.collection("categories").getDocuments() { (querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                self.categories = querySnapshot!.documents.compactMap({Category(dictionary: $0.data())})
+                DispatchQueue.main.async {
+                    self.collectionView?.reloadData()
+                }
+            }
         }
-        collectionView?.reloadData()
     }
+    
+    func checkLiveUpdates() {
+        db.collection("categories").whereField("timestamp", isGreaterThan: Date()).addSnapshotListener { (querysnapshot, error) in
+            querysnapshot?.documentChanges.forEach({ (diff) in
+                if diff.type == .added {
+                    self.categories.append(Category(dictionary: diff.document.data())!)
+                    DispatchQueue.main.async {
+                        self.collectionView?.reloadData()
+                    }
+                }
+            })
+        }
+    }
+    
+    
 }
 
 
@@ -166,7 +185,7 @@ extension CategoryCollectionViewController {
     
     @objc func endRefresh() {
         refreshController.endRefreshing()
-        timer.invalidate()
+        timer?.invalidate()
         timer = nil
     }
     

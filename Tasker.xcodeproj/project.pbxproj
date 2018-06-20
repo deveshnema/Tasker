@@ -16,7 +16,9 @@
 		956E175F20D0C768008232D3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 956E175D20D0C768008232D3 /* Main.storyboard */; };
 		956E176120D0C76B008232D3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 956E176020D0C76B008232D3 /* Assets.xcassets */; };
 		956E176420D0C76B008232D3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 956E176220D0C76B008232D3 /* LaunchScreen.storyboard */; };
-		956E177320D0E4F1008232D3 /* TaskModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 956E177120D0E4F1008232D3 /* TaskModel.xcdatamodeld */; };
+		956E520420D8ADBC0041FE1B /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 956E520320D8ADBC0041FE1B /* Task.swift */; };
+		956E520620D8ADC70041FE1B /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 956E520520D8ADC70041FE1B /* Category.swift */; };
+		956E520820D8B1090041FE1B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 956E520720D8B1090041FE1B /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,7 +33,9 @@
 		956E176020D0C76B008232D3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		956E176320D0C76B008232D3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		956E176520D0C76B008232D3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		956E177220D0E4F1008232D3 /* TaskModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TaskModel.xcdatamodel; sourceTree = "<group>"; };
+		956E520320D8ADBC0041FE1B /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
+		956E520520D8ADC70041FE1B /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
+		956E520720D8B1090041FE1B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		9A4130D6B412DD926D307C22 /* Pods-Tasker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tasker.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tasker/Pods-Tasker.debug.xcconfig"; sourceTree = "<group>"; };
 		C69D7115FA876873497F840C /* Pods_Tasker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tasker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -101,6 +105,7 @@
 				9528FF2120D4D11F006799A6 /* Layout */,
 				956E176D20D0DAB8008232D3 /* Supporting Files */,
 				956E176520D0C76B008232D3 /* Info.plist */,
+				956E520720D8B1090041FE1B /* GoogleService-Info.plist */,
 			);
 			path = Tasker;
 			sourceTree = "<group>";
@@ -135,7 +140,8 @@
 		956E177020D0DAD5008232D3 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				956E177120D0E4F1008232D3 /* TaskModel.xcdatamodeld */,
+				956E520320D8ADBC0041FE1B /* Task.swift */,
+				956E520520D8ADC70041FE1B /* Category.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -202,6 +208,7 @@
 			files = (
 				956E176420D0C76B008232D3 /* LaunchScreen.storyboard in Resources */,
 				9528FF2520D4F8A8006799A6 /* RefreshContents.xib in Resources */,
+				956E520820D8B1090041FE1B /* GoogleService-Info.plist in Resources */,
 				956E176120D0C76B008232D3 /* Assets.xcassets in Resources */,
 				956E175F20D0C768008232D3 /* Main.storyboard in Resources */,
 			);
@@ -217,13 +224,31 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Tasker/Pods-Tasker-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/BoringSSL/openssl.framework",
 				"${BUILT_PRODUCTS_DIR}/ChameleonFramework/ChameleonFramework.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/SwipeCellKit/SwipeCellKit.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC/GRPCClient.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-Core/grpc.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-ProtoRPC/ProtoRPC.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-RxLibrary/RxLibrary.framework",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ChameleonFramework.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwipeCellKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GRPCClient.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpc.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtoRPC.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxLibrary.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -258,8 +283,9 @@
 				9528FF2320D4D147006799A6 /* PinterestLayout.swift in Sources */,
 				9528FF2020D4C8B2006799A6 /* CategoryCollectionViewController.swift in Sources */,
 				956E175C20D0C768008232D3 /* TaskerViewController.swift in Sources */,
-				956E177320D0E4F1008232D3 /* TaskModel.xcdatamodeld in Sources */,
+				956E520420D8ADBC0041FE1B /* Task.swift in Sources */,
 				956E175A20D0C768008232D3 /* AppDelegate.swift in Sources */,
+				956E520620D8ADC70041FE1B /* Category.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -406,10 +432,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = Tasker/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.deveshnema.Tasker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -424,10 +447,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = Tasker/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.deveshnema.Tasker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -457,19 +477,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		956E177120D0E4F1008232D3 /* TaskModel.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				956E177220D0E4F1008232D3 /* TaskModel.xcdatamodel */,
-			);
-			currentVersion = 956E177220D0E4F1008232D3 /* TaskModel.xcdatamodel */;
-			path = TaskModel.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = 956E174E20D0C768008232D3 /* Project object */;
 }

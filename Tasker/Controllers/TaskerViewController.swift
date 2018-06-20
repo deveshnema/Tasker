@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import CoreData
+import FirebaseFirestore
 import SwipeCellKit
 import ChameleonFramework
 
@@ -16,14 +16,14 @@ class TaskerViewController: UITableViewController {
     @IBOutlet weak var searchBar: UISearchBar!
     
     var taskArray = [Task]()
-    
+    let db = Firestore.firestore()
+
     var selectedCategory : Category? {
         didSet {
             loadTasks()
         }
     }
     
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,7 +33,6 @@ class TaskerViewController: UITableViewController {
     }
     
     func animateTable() {
-        
         self.tableView.reloadData()
         
         let cells = tableView.visibleCells
@@ -77,18 +76,17 @@ class TaskerViewController: UITableViewController {
         let task = taskArray[indexPath.row]
         cell.textLabel?.text = task.title
         cell.accessoryType = task.done ? .checkmark : .none
-        if let color = UIColor(hexString: selectedCategory!.color!)?.darken(byPercentage: CGFloat(indexPath.row) / CGFloat(taskArray.count)) {
+        if let color = UIColor(hexString: selectedCategory!.color)?.darken(byPercentage: CGFloat(indexPath.row) / CGFloat(taskArray.count)) {
             cell.backgroundColor = color
             cell.textLabel?.textColor = ContrastColorOf(color, returnFlat: true)
         }
-        
         return cell
     }
     
     //MARK:- Tableview delegate methods
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         taskArray[indexPath.row].done = !taskArray[indexPath.row].done
-        saveTasksAndReloadTableData()
+        //saveTasksAndReloadTableData()
         tableView.deselectRow(at: indexPath, animated: true)
     }
 
@@ -100,13 +98,18 @@ class TaskerViewController: UITableViewController {
         
         let action = UIAlertAction(title: "Add Task", style: UIAlertActionStyle.default) { (action) in
             //what will happen once the user clicks the add task button on our alert
-            let task = Task(context: self.context)
-            task.title = textField.text!
-            task.done = false
-            task.parentCategory = self.selectedCategory
-            
-            self.taskArray.append(task)
-            self.saveTasksAndReloadTableData()
+            let task = Task(title: textField.text!, done: false, parentCategory: self.selectedCategory!)
+            self.selectedCategory?.tasks.append(task)
+            if let name = self.selectedCategory?.name {
+                self.db.collection("categories").document("\(name)").setData((self.selectedCategory?.dictionary)!, merge: true) { err in
+                    if let err = err {
+                        print("Error writing document: \(err)")
+                    } else {
+                        print("Document successfully written!")
+                    }
+                }
+                self.tableView.reloadData()
+            }
         }
         
         alert.addTextField { (alertTextField) in
@@ -118,53 +121,32 @@ class TaskerViewController: UITableViewController {
         present(alert, animated: true, completion: nil)
     }
     
-    //MARK:- save tasks
-    func saveTasksAndReloadTableData() {
-        do {
-            try context.save()
-        } catch  {
-            print("Error-101: Couldnt save context: \(error)")
-        }
-        tableView.reloadData()
-    }
     
     //MARK:- load tasks
-    func loadTasks(with request: NSFetchRequest<Task> = Task.fetchRequest(), predicate: NSPredicate? = nil) {
-        let categoryPredicate = NSPredicate(format: "parentCategory.name MATCHES %@", selectedCategory!.name!)
-
-        if let additionalPredicate = predicate {
-            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate, additionalPredicate])
-        } else {
-            request.predicate = categoryPredicate
-        }
-
-        do {
-            taskArray = try context.fetch(request)
-        } catch  {
-            print("Error-201: Couldnt fetch context: \(error)")
-        }
+    func loadTasks() {
+        taskArray = (selectedCategory?.tasks)!
         tableView.reloadData()
     }
 }
 
 //MARK:- Searchbar  methods
-extension TaskerViewController : UISearchBarDelegate {
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        let request : NSFetchRequest<Task> = Task.fetchRequest()
-        let predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
-        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
-        loadTasks(with: request, predicate: predicate)
-    }
-    
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if searchBar.text?.count == 0 {
-            loadTasks()
-            DispatchQueue.main.async {
-                searchBar.resignFirstResponder()
-            }
-        }
-    }
-}
+//extension TaskerViewController : UISearchBarDelegate {
+//    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+//        let request : NSFetchRequest<Task> = Task.fetchRequest()
+//        let predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
+//        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+//        loadTasks(with: request, predicate: predicate)
+//    }
+//    
+//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+//        if searchBar.text?.count == 0 {
+//            loadTasks()
+//            DispatchQueue.main.async {
+//                searchBar.resignFirstResponder()
+//            }
+//        }
+//    }
+//}
 
 //MARK:- SwipeTableViewCellDelegate delegate
 extension TaskerViewController : SwipeTableViewCellDelegate {
