@@ -11,9 +11,11 @@ An iOS (Swift 4) Task-list App
 - The Task-Category UICollectionView also has a custom UIRefreshControl, whose view is implemented in a xib/nib
 - The Tasks-List UITableView has an animation on the table cells - which spring up the cells anytime the tableview appears
 - Tasks-List tableview cells are also swipeable (to delete tasks) - implemented via SwipeCellKit
+- Tasks-list View Controller contains a searchbar 
 - Chameleon Framework is used to assign different colors to UICollectionView cells and UITableView cells
 - Tasks-List cells derive their color from their parent Category cell's color
 - As more tasks are added to a category, the cells are assigned a gradient of their parent Category cell's color
+- Also explored using CoreData Framework while developing this app
 
 
 
@@ -26,5 +28,6 @@ An iOS (Swift 4) Task-list App
 - ChameleonFramework
 - Firebase/Core
 - Firebase/Firestore
+- CoreData
 
 ## Screenshots
